@@ -19,10 +19,6 @@ const loadMoreBtn =
 let page = 1;
 let perPage = 40;
 
-const lightbox = new SimpleLightbox('.photo-card', {
-  captionDelay: 250,
-});
-
 
 searchForm.addEventListener(
 	'submit',
@@ -82,6 +78,10 @@ function onResetSearch(page) {
   page = 1;
   gallery.innerHTML = '';
 }
+
+const lightbox = new SimpleLightbox('.photo-card', {
+  captionDelay: 250,
+});
 
 function onLoadFunction() {
   const inputSearch = searchForm.elements.searchQuery.value;
