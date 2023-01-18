@@ -11,8 +11,8 @@ const btnSubmit = document.querySelector('.search-button');
 const gallery = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('.load-more');
 
-let page = '';
-let perPage = '';
+let page = 1;
+let perPage = 40;
 
 searchForm.addEventListener('submit', onSearchSubmit);
 
@@ -20,17 +20,15 @@ searchForm.addEventListener('submit', onSearchSubmit);
 function onSearchSubmit (event) {
     event.preventDefault();
     const inputSearch = event.target.elements.searchQuery.value.trim();
-    page = 1;
     if(!inputSearch){
         return Notify.info("Sorry, there are no images matching your search query. Please try again.");
     }
     
-    fetchFunction(inputSearch, page, perPage).then(onSchowGallery).catch(onError)
+    fetchFunction(inputSearch, page, perPage).then(onSchowGallery).catch(console.log(error))
 }
 
 function onSchowGallery(content) {
-    const markup = onGalleryRender(content);
-    gallery.insertAdjacentHTML('beforeend', markup);
+    gallery.insertAdjacentHTML('beforeend', galleryMarkup);
     loadMoreBtn.classList.remove('is-hidden')
 }
 
