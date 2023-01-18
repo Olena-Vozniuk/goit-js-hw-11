@@ -1,7 +1,19 @@
+
 export function onGalleryRender(content) {
-    const galleryMarkup = content.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => {
-    return `<div class="photo-card">
-                <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+	return content
+		.map(
+			({
+				webformatURL,
+				largeImageURL,
+				tags,
+				likes,
+				views,
+				comments,
+				downloads,
+			}) => {
+        return `<div class="photo-card">
+        <a class='photo-card__item' href='${largeImageURL}'>
+                <img src="${webformatURL}" alt="${tags}" loading="lazy" width=300 /></a>
               <div class="info">
                 <p class="info-item">
                   <b>Likes: ${likes}</b>
@@ -16,5 +28,8 @@ export function onGalleryRender(content) {
                   <b>Downloads: ${downloads}</b>
                 </p>
               </div>
-          </div>`}).join('');
+          </div>`;
+			}
+		)
+		.join('');
 }
