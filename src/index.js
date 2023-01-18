@@ -79,7 +79,7 @@ function onResetSearch(page) {
   gallery.innerHTML = '';
 }
 
-const lightbox = new SimpleLightbox('.photo-card', {
+const lightbox = new SimpleLightbox('.photo-card a', {
   captionDelay: 250,
 });
 
