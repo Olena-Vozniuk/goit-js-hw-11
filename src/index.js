@@ -50,6 +50,7 @@ function onSchowGallery(content) {
         onGalleryRender(content.hits)
     );
     loadMoreBtn.classList.remove('is-hidden');
+    lightbox.refresh();
     
     if (page === 1 && content.totalHits > 1) {
         Notify.success(`Hooray! We found ${content.totalHits} images.`);
@@ -88,8 +89,7 @@ function onLoadFunction() {
   page += 1;
 	fetchFunction(inputSearch, page, perPage)
 		.then(onSchowGallery)
-        .catch(onError);
-    lightbox.refresh();
+        .catch(onError)
 }
 
 
