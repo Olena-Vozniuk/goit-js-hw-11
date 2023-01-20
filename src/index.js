@@ -44,35 +44,59 @@ function onSearchSubmit(event) {
 
 }
 
-function onSchowGallery(content) {
-    gallery.insertAdjacentHTML(
-        'beforeend',
-        onGalleryRender(content.hits)
-    );
-    loadMoreBtn.classList.remove('is-hidden');
-    lightbox.refresh();
-    
-    if (page === 1 && content.totalHits > 1) {
-        Notify.success(`Hooray! We found ${content.totalHits} images.`);
-    }
-    
-    if (content.totalHits < 40) {
-        loadMoreBtn.classList.add('is-hidden');
-    }
-    
-    if (content.totalHits === 0) {
-        loadMoreBtn.classList.add('is-hidden');
-        return Notify.failure(
-            'Sorry, there are no images matching your search query. Please try again.'
+async function onSchowGallery({totalHits, hits}) {
+    try {
+        gallery.insertAdjacentHTML(
+            'beforeend',
+            onGalleryRender(hits)
         );
+        const pages = totalHits / perPage;
+        loadMoreBtn.classList.remove('is-hidden');
+        lightbox.refresh();
+    
+        if (page === 1 && totalHits > 1) {
+            Notify.success(`Hooray! We found ${totalHits} images.`);
+        }
+    
+        if (totalHits < 40 && totalHits > 0) {
+            loadMoreBtn.classList.add('is-hidden');
+            return Notify.failure("We're sorry, but you've reached the end of search results."
+  );
+        }
+        
+        if (page === pages) {
+            loadMoreBtn.classList.add('is-hidden');
+            return Notify.failure("We're sorry, but you've reached the end of search results."
+  );
+        }
+        if (totalHits === 0) {
+            loadMoreBtn.classList.add('is-hidden');
+            return Notify.failure(
+                'Sorry, there are no images matching your search query. Please try again.'
+            );
+        }
+      
+    
+        const response = await fetchFunction(inputSearch, page, perPage);
+        const arrayOfImages = response.data.hits;
+        
+        if (!arrayOfImages.length) {
+            loadMoreBtn.classList.add('is-hidden');
+            return Notify.failure("We're sorry, but you've reached the end of search results.");
+        }
     }
-}
+    catch (error) {
+            console.error(error.stack);
+        }
+    }
+
 
 
 function onError(error) { 
+    loadMoreBtn.classList.add('is-hidden');
     return Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-    );
+            'Sorry, there are no images matching your search query. Please try again.'
+        );
 }
 
 function onResetSearch(page) {
