@@ -18,7 +18,6 @@ const loadMoreBtn =
 
 let page = 1;
 let perPage = 40;
-const totalImages = '';
 
 
 searchForm.addEventListener(
@@ -61,7 +60,7 @@ async function onSchowGallery({totalHits, hits}) {
         if (totalHits < 40 && totalHits > 0) {
             loadMoreBtn.classList.add('is-hidden');
             return Notify.failure("We're sorry, but you've reached the end of search results."
-  );
+            );
         }
         
         if (totalHits === 0) {
@@ -70,19 +69,15 @@ async function onSchowGallery({totalHits, hits}) {
                 'Sorry, there are no images matching your search query. Please try again.'
             );
         }
-      
-        const response = await fetchFunction(inputSearch, page, perPage);
-        totalImages = response.data.hits;
-        
-        if (totalImages >= totalHits) {
-            loadMoreBtn.classList.add('is-hidden');
-            return Notify.failure("We're sorry, but you've reached the end of search results.");
-        }
+      if (hits.length<40) {
+          Notify.failure(`We're sorry, but you've reached the end of search results.`);
+          loadMoreBtn.classList.add('is-hidden');
+    }
     }
     catch (error) {
             console.error(error.stack);
         }
-    }
+    } 
 
 
 
