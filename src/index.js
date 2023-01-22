@@ -18,6 +18,7 @@ const loadMoreBtn =
 
 let page = 1;
 let perPage = 40;
+const totalImages = '';
 
 
 searchForm.addEventListener(
@@ -50,7 +51,6 @@ async function onSchowGallery({totalHits, hits}) {
             'beforeend',
             onGalleryRender(hits)
         );
-        const pages = totalHits / perPage;
         loadMoreBtn.classList.remove('is-hidden');
         lightbox.refresh();
     
@@ -64,11 +64,6 @@ async function onSchowGallery({totalHits, hits}) {
   );
         }
         
-        if (page === pages) {
-            loadMoreBtn.classList.add('is-hidden');
-            return Notify.failure("We're sorry, but you've reached the end of search results."
-  );
-        }
         if (totalHits === 0) {
             loadMoreBtn.classList.add('is-hidden');
             return Notify.failure(
@@ -76,11 +71,10 @@ async function onSchowGallery({totalHits, hits}) {
             );
         }
       
-    
         const response = await fetchFunction(inputSearch, page, perPage);
-        const arrayOfImages = response.data.hits;
+        totalImages = response.data.hits;
         
-        if (!arrayOfImages.length) {
+        if (!totalImages.length) {
             loadMoreBtn.classList.add('is-hidden');
             return Notify.failure("We're sorry, but you've reached the end of search results.");
         }
