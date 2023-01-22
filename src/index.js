@@ -74,7 +74,7 @@ async function onSchowGallery({totalHits, hits}) {
         const response = await fetchFunction(inputSearch, page, perPage);
         totalImages = response.data.hits;
         
-        if (!totalImages.length) {
+        if (totalImages >= totalHits) {
             loadMoreBtn.classList.add('is-hidden');
             return Notify.failure("We're sorry, but you've reached the end of search results.");
         }
